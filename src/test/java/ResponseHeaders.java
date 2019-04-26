@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class ResponseHeaders {
 
@@ -53,30 +54,27 @@ public class ResponseHeaders {
 
         response = client.execute(get);
 
-        String headerValue = getHeader(response, "Server");
+        String headerValue = ResponseUtils.getHeader(response, "Server");
 
         assertEquals(headerValue, "GitHub.com");
     }
 
-    private String getHeader(CloseableHttpResponse response, String headerName) {
-        //Get all headers
-        Header[] headers = response.getAllHeaders();
-        List<Header> httpHeaders = Arrays.asList(headers);
-        String returnHeader = "";
+    @Test
+    public void xRateLimitIsSixty() throws IOException {
+        HttpGet get = new HttpGet(BASE_ENDPOINT);
+        response = client.execute(get);
+        String limitVal = ResponseUtils.getHeadersUsingJava8(response, "X-RateLimit-Limit");
+        assertEquals(limitVal, "60");
+    }
 
-        //Loop over header list
-        for (Header header : httpHeaders) {
-            if (headerName.equalsIgnoreCase(header.getName())){
-                returnHeader = header.getValue();
-            }
-        }
+    @Test
+    public void eTagIsPresent() throws IOException {
+        HttpGet get = new HttpGet(BASE_ENDPOINT);
+        response = client.execute(get);
 
-        //If no headers found, throw an exception
-        if (returnHeader.isEmpty()){
-            throw new RuntimeException("Didn't find the header " + headerName);
-        }
+        boolean tagIsPresent = ResponseUtils.headerIsPresent(response, "Etag");
 
-        //Return the header
-        return returnHeader;
+        assertTrue(tagIsPresent);
     }
 }
+
