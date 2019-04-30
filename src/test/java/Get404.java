@@ -11,24 +11,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-public class Get404 {
-    public static final String BASE_ENDPOINT = "https://api.github.com";
-    CloseableHttpClient client;
-    CloseableHttpResponse response;
-
-    @BeforeMethod
-    public void setup(){
-        client = HttpClientBuilder.create().build();
-    }
-
-    @AfterMethod
-    public void closeResource() throws IOException {
-        client.close();
-        if(response != null)
-        {
-            response.close();
-        }
-    }
+public class Get404 extends BaseClass{
 
     @DataProvider
     private Object[][] endpoints(){

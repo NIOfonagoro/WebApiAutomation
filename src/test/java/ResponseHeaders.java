@@ -17,23 +17,7 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class ResponseHeaders {
-
-    public static final String BASE_ENDPOINT = "https://api.github.com";
-    CloseableHttpClient client;
-    CloseableHttpResponse response;
-
-    @BeforeMethod
-    public void setup() {client = HttpClientBuilder.create().build(); }
-
-    @AfterMethod
-    public void closeResource() throws IOException {
-        client.close();
-        if(response != null)
-        {
-            response.close();
-        }
-    }
+public class ResponseHeaders extends BaseClass{
 
     @Test
     public void contentTypeIsJson() throws IOException {

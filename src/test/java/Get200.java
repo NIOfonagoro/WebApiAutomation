@@ -10,29 +10,11 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-public class Get200 {
-
-    public static final String BASE_ENDPOINT = "https://api.github.com";
-    CloseableHttpClient client;
-    CloseableHttpResponse response;
-
-    @BeforeMethod
-    public void setup(){
-        client = HttpClientBuilder.create().build();
-    }
-
-    @AfterMethod
-    public void closeResource() throws IOException {
-        client.close();
-        if(response != null)
-        {
-            response.close();
-        }
-    }
+public class Get200 extends BaseClass{
 
     @Test
     public void baseUrlReturns200() throws IOException {
-        HttpGet get = new HttpGet(BASE_ENDPOINT);
+        HttpGet get = new HttpGet(BaseClass.BASE_ENDPOINT);
 
         HttpResponse response = client.execute(get);
 
